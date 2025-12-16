@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from blogs.models import Category,Blog
+from assignments.models import About
 
 def home(req):
     # categories = Category.objects.all()
@@ -8,9 +9,17 @@ def home(req):
     print(posts)
     # print(featured_posts)
     # print(categories)
+    
+    # fetch about us
+    try:
+        about = About.objects.get()
+    except:
+        about = None
+    
     context = {
         # 'categories': categories,
         'featured_posts' : featured_posts,
         'posts' : posts,
+        'about':about,
     }
     return render(req,"home.html",context)
