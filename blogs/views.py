@@ -15,9 +15,17 @@ def posts_by_category(req,category_id):
 
     # category = Category.objects.get(pk=category_id)
 
-    
     context = {
         "posts":posts,
         'category':category,
     }
     return render(req,'posts_by_category.html',context)
+
+def blogs(req,slug):
+    single_blog = get_object_or_404(Blog,slug=slug, status='Published')
+   
+    context = {
+        'single_blog': single_blog,
+      
+    }
+    return render(req,'blogs.html',context)

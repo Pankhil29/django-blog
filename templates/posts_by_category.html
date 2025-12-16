@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Featured Post Banner-->
-{% for post in featured_posts %}
+<!-- {% for post in featured_posts %}
 {% if forloop.first %}
 <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark"
     style="background-image: url({{ post.featured_image.url}});background-blend-mode: overlay;background-size:cover;">
@@ -14,7 +14,7 @@
     </div>
 </div>
 {% endif %}
-{% endfor %}
+{% endfor %} -->
 
 <!-- Feature Posts -->
 <h3 class="text-uppercase text-warning" style="letter-spacing: 2px;">Category - {{ category}}</h3>
@@ -24,7 +24,7 @@
     <div class="col-md-6">
         <div class="card border-0">
             <div class="card-body">
-                <h3>{{ post.title }}</h3>
+                <h3><a href="{% url 'blogs' post.slug %}" class="text-dark">{{ post.title }}</a></h3>
                 <small class="mb-1 text-muted">{{ post.created_at | timesince}} ago | {{ post.author }}</small>
                 <p class="card-text">{{ post.short_description | truncatewords:25 }}</p>
             </div>
