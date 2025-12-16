@@ -13,6 +13,7 @@ def home(req):
     # fetch about us
     try:
         about = About.objects.get()
+        # in this we only use get function only because all,filter functions are give the object 
     except:
         about = None
     
