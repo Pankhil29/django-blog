@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse 
 from .models import Blog,Category
+from django.db.models import Q
 
 def posts_by_category(req,category_id):
     posts = Blog.objects.filter(status="Published",category=category_id)
@@ -29,3 +30,14 @@ def blogs(req,slug):
       
     }
     return render(req,'blogs.html',context)
+
+def search(req):
+    keyword = req.GET.get('keyword')
+    
+    blogs = Blog.objects.filter(Q (short_description__icontains=keyword) | Q (blog_body__icontains=keyword) | Q(title__icontains=keyword), status='Published')  # icontains i means caseinsensitive 
+    context ={
+        'blogs':blogs,
+        'keyword': keyword,
+    }
+    
+    return render(req,'search.html',context)

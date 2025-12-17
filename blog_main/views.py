@@ -24,3 +24,4 @@ def home(req):
         'about':about,
     }
     return render(req,"home.html",context)
+
