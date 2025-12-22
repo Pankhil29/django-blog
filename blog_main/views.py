@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from blogs.models import Category,Blog
 from assignments.models import About
+from .forms import RegistrationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import auth
 
 def home(req):
     # categories = Category.objects.all()
@@ -25,3 +28,43 @@ def home(req):
     }
     return render(req,"home.html",context)
 
+
+def register(req):
+    if req.method == 'POST':
+        form = RegistrationForm(req.POST)
+        if form.is_valid():
+            form.save()
+            print("success")
+            return redirect('register') 
+        else: 
+            print("not sucess")
+            print(form.errors) 
+            
+    else:        
+        form = RegistrationForm()
+    context = {
+         'form':form,
+    }
+    return render(req,'register.html',context)
+
+def login(req):
+    if req.method == 'POST':
+        form = AuthenticationForm(req,req.POST)  # why this is not created in forms.py because this form have only 2 fields so that 
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            print(username)
+            password = form.cleaned_data['password']
+            
+            user = auth.authenticate(username=username,password=password)
+            if user is not None:
+                auth.login(req,user)
+            return redirect('home')
+    form = AuthenticationForm() 
+    context ={
+            'form' : form,
+        }
+    return render(req,'login.html',context)
+
+def logout(req):
+    auth.logout(req)
+    return redirect("home")
