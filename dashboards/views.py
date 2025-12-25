@@ -49,3 +49,11 @@ def delete_category(req,pk):
     category = get_object_or_404(Category,pk=pk)
     category.delete()
     return redirect('categories')
+
+
+def posts(req):
+    posts = Blog.objects.all()
+    context = {
+        'posts':posts
+    }
+    return render(req,'dashboard/posts.html',context)
