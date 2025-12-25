@@ -58,7 +58,7 @@ def login(req):
             user = auth.authenticate(username=username,password=password)
             if user is not None:
                 auth.login(req,user)
-            return redirect('home')
+            return redirect('dashboard')
     form = AuthenticationForm() 
     context ={
             'form' : form,

@@ -18,7 +18,7 @@ def posts_by_category(req,category_id):
 
     context = {
         "posts":posts,
-        'category':category,
+        # 'category':category,
     }
     return render(req,'posts_by_category.html',context)
 
