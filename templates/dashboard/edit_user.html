@@ -10,7 +10,7 @@
 
     <!-- right sidebar -->
     <div class="col-md-9">
-        <h2>Edit User</h2>
+        <h2>Edit User</h2>  
         <form action="{% url 'edit_user' user.id %}" method="post">
             {% csrf_token %}
 
