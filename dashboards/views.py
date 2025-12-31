@@ -39,7 +39,7 @@ def edit_category(req,pk):
         if form.is_valid():
             form.save()
             return redirect('categories')
-    form = CategoryForm(instance=category)
+    form = CategoryForm(instance=category) # means ke category me je data hoy aene form me put karo
     context = {
         'form': form,
         'category':category,
@@ -67,8 +67,9 @@ def add_post(req):
             post = form.save(commit=False) # temporary save the data
             post.author = req.user
             # print('form valid')
+            post.save()
             title = form.cleaned_data['title']
-            post.slug = slugify(title)
+            post.slug = slugify(title) + '-' + str(post.id)
             post.save()
             return redirect('posts')    
         else:
@@ -79,3 +80,27 @@ def add_post(req):
         'form':form
     }
     return render(req,'dashboard/add_post.html',context)
+
+
+def edit_post(req,pk):
+    post = get_object_or_404(Blog,pk=pk)
+    if req.method == 'POST':
+        form = BlogPostForm(req.POST,req.FILES,instance=post)
+        if form.is_valid():
+            post = form.save()
+            title = form.cleaned_data['title']
+            post.slug = slugify(title) + '-'+str(post.id)   
+            form.save()
+            return redirect('posts')
+    form = BlogPostForm(instance=post)
+    context = {
+        'form' : form,
+        'post':post
+
+    }
+    return render(req,'dashboard/edit_post.html',context)
+
+def delete_post(req,pk):
+    post = get_object_or_404(Blog,pk=pk)
+    post.delete()
+    return redirect('posts')
