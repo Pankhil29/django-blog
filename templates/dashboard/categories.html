@@ -31,9 +31,13 @@
                     <td>{{ cat.created_at }}</td>
                     <td>{{ cat.updated_at }}</td>
                     <td>
+                        {% if user.is_staff or blog.author == user %}
                         <a href="{% url 'edit_category' cat.pk %}"><i class="fas fa-edit text-success"></i></a>
                         &nbsp;
                         <a href="{% url 'delete_category' cat.pk %}"><i class="fas fa-trash text-danger"></i></a>
+                        {% else %}
+                        <p>no action available</p>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

@@ -39,14 +39,13 @@ def blogs(req,slug):
         'single_blog': single_blog,
         'comments':comments,
         'comments_count' : comments_count,
-      
     }
     return render(req,'blogs.html',context)
 
 def search(req):
     keyword = req.GET.get('keyword')
     
-    blogs = Blog.objects.filter(Q (short_description__icontains=keyword) | Q (blog_body__icontains=keyword) | Q(title__icontains=keyword), status='Published')  # icontains i means caseinsensitive 
+    blogs = Blog.objects.filter(Q (short_description__icontains=keyword) | Q (blog_body__icontains=keyword) | Q(title__icontains=keyword) , status='Published')  # icontains i means caseinsensitive 
     context ={
         'blogs':blogs,
         'keyword': keyword,

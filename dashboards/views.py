@@ -1,3 +1,4 @@
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render,redirect
 from blogs.models import Category,Blog
 from django.contrib.auth.decorators import login_required
@@ -22,6 +23,8 @@ def categories(req):
     return render(req,"dashboard/categories.html")
 
 def add_category(req):
+    if not req.user.is_staff:
+        return HttpResponseForbidden("Admins only")
     if req.method == 'POST':
         form = CategoryForm(req.POST)
         if form.is_valid():
@@ -34,6 +37,8 @@ def add_category(req):
     return render(req,'dashboard/add_category.html',context)
 
 def edit_category(req,pk):
+    if not req.user.is_staff:
+        return HttpResponseForbidden("Admins only")
     category = get_object_or_404(Category,pk=pk)
     if req.method == 'POST':
         form = CategoryForm(req.POST,instance=category)
@@ -48,6 +53,8 @@ def edit_category(req,pk):
     return render(req,'dashboard/edit_category.html',context)
 
 def delete_category(req,pk):
+    if not req.user.is_staff:
+        return HttpResponseForbidden("Admins only")
     category = get_object_or_404(Category,pk=pk)
     category.delete()
     return redirect('categories')
@@ -85,6 +92,8 @@ def add_post(req):
 
 def edit_post(req,pk):
     post = get_object_or_404(Blog,pk=pk)
+    if not (req.user.is_staff or post.author == req.user):
+        return HttpResponseForbidden("You are not allowed")
     if req.method == 'POST':
         form = BlogPostForm(req.POST,req.FILES,instance=post)
         if form.is_valid():
@@ -102,6 +111,9 @@ def edit_post(req,pk):
     return render(req,'dashboard/edit_post.html',context)
 
 def delete_post(req,pk):
+    post = get_object_or_404(Blog,pk=pk)
+    if not (req.user.is_staff or post.author == req.user):
+        return HttpResponseForbidden("You are not allowed")
     post = get_object_or_404(Blog,pk=pk)
     post.delete()
     return redirect('posts')

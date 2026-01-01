@@ -37,9 +37,13 @@
                             class="fas fa-times text-danger"></i>{% endif %}</td>
 
                     <td>
+                        {% if user.is_staff or post.author == user %}
                         <a href="{% url 'edit_post' post.id %}"><i class="fas fa-edit text-success"></i></a>
                         &nbsp;
                         <a href="{% url 'delete_post' post.id %}"><i class="fas fa-trash text-danger"></i></a>
+                        {% else %}
+                        <p>no action</p>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

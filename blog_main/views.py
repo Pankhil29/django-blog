@@ -35,7 +35,7 @@ def register(req):
         if form.is_valid():
             form.save()
             print("success")
-            return redirect('register') 
+            return redirect('login') 
         else: 
             print("not sucess")
             print(form.errors) 
