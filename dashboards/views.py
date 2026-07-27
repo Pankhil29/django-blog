@@ -74,8 +74,6 @@ def add_post(req):
         if form.is_valid():
             post = form.save(commit=False) # temporary save the data
             post.author = req.user
-            # print('form valid')
-            post.save()
             title = form.cleaned_data['title']
             post.slug = slugify(title) + '-' + str(post.id)
             post.save()

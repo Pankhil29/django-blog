@@ -5,6 +5,7 @@ from django.db.models import Q
 
 def posts_by_category(req,category_id):
     posts = Blog.objects.filter(status="Published",category=category_id)
+    
     # if we want to 404 error then we can use get_object_or_404
     category = get_object_or_404(Category, pk=category_id)
 

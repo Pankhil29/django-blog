@@ -7,15 +7,16 @@ from django.contrib import auth
 
 def home(req):
     # categories = Category.objects.all()
-    featured_posts = Blog.objects.filter(is_featured=True,status='Published').order_by('updated_at')
-    posts = Blog.objects.filter(is_featured=False,status='Published')
+    featured_posts = Blog.objects.select_related('author').filter(is_featured=True,status='Published').order_by('updated_at')
+    posts = Blog.objects.select_related('author').filter(is_featured=False,status='Published')
+    print(featured_posts)
     print(posts)
     # print(featured_posts)
     # print(categories)
     
     # fetch about us
     try:
-        about = About.objects.get()
+        about = About.objects.first()
         # in this we only use get function only because all,filter functions are give the object 
     except:
         about = None
